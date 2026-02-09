@@ -1,0 +1,179 @@
+{% extends "reports/base_reports.html" %}
+{% load static %}
+{% load humanize %}
+{% block extrahead %}
+<!--{{ block.super }}-->
+<!--<link rel="stylesheet" href="{% static 'homebrew/admin_reports.css' %}">-->
+<!--{% endblock %}-->
+{% block content %}
+
+<p class="subtitle is-3">{{ title }}</p>
+
+<div class="card mb-5">
+    <header class="card-header">
+        <p class="card-header-title">
+            Период
+        </p>
+    </header>
+
+    <div class="card-content">
+        <form method="get">
+            <div class="columns is-multiline">
+
+                <div class="column is-3">
+                    <div class="field">
+                        <label class="label">От:</label>
+                        <div class="control">
+                            <input class="input" type="date" name="from" value="{{ date_from|date:'Y-m-d' }}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="column is-3">
+                    <div class="field">
+                        <label class="label">До:</label>
+                        <div class="control">
+                            <input class="input" type="date" name="to" value="{{ date_to|date:'Y-m-d' }}">
+                        </div>
+                    </div>
+                </div>
+                <!-- Кнопка применить -->
+                <div class="column is-3">
+                    <div class="field">
+                        <label class="label">&nbsp;</label>
+                        <div class="control">
+                            <button type="submit" class="button is-primary is-fullwidth">
+                                Применить
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-3">
+                    <div class="field">
+                        <label class="label">&nbsp;</label>
+                        <div class="control">
+                            <div>
+                                <button class="button is-warning is-fullwidth" id="clear">
+                                    Очистить
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Big KPI cards -->
+<div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:14px;">
+    <div style="padding:20px; background:#f7fbf9; border-radius:12px;">
+        <div style="font-size:13px;color:#444">Продаж</div>
+        <div class="report-number"
+             style="font-size:26px;font-weight:700;color:#1a7f37;">{{ kpis.total_purchases }}
+        </div>
+    </div>
+    <div style="padding:20px; background:#fff7f7; border-radius:12px;">
+        <div style="font-size:13px;color:#444">Литров</div>
+        <div class="report-number"
+             style="font-size:26px;font-weight:700; color:#9c1717;">{{ kpis.total_liters }}
+        </div>
+    </div>
+    <div style="padding:20px; background:#f7f7ff; border-radius:12px;">
+        <div style="font-size:13px;color:#444">Выручка</div>
+        <div class="report-number"
+             style="font-size:26px;font-weight:700; color:#5511ff;">{{ kpis.total_revenue }}
+        </div>
+    </div>
+    <div style="padding:20px; background:#ffad00; border-radius:12px;">
+        <div style="font-size:13px;color:#444">Клиентов</div>
+        <div class="report-number"
+             style="font-size:26px;font-weight:700; color:#000000;">{{ kpis.total_clients }}
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<div style="display: flex; gap: 30px; margin-top: 25px; flex-wrap: wrap;">
+    
+    <div style="flex: 1; min-width: 250px;">
+        <p class="subtitle is-3 has-text-centered">Топ (выручка)</p>
+        <div style="display: flex; justify-content: center;">
+            <ol style="width: fit-content; text-align: left;">
+                {% for c in top_clients|slice:":10" %}
+                <li>{{ c.client__client }} — <strong>{{ c.revenue|intcomma }}</strong> ₽</li>
+                {% empty %}
+                <li>Нет данных</li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+
+    <div style="flex: 1; min-width: 250px;">
+        <p class="subtitle is-3 has-text-centered">Топ (объёмы)</p>
+        <div style="display: flex; justify-content: center;">
+            <ol style="width: fit-content; text-align: left;">
+                {% for c in top_volume|slice:":10" %}
+                <li>{{ c.client__client }} — <strong>{{ c.liters|intcomma }}</strong> л</li>
+                {% empty %}
+                <li>Нет данных</li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+
+    <div style="flex: 1; min-width: 250px;">
+        <p class="subtitle is-3 has-text-centered">Топ (визиты)</p>
+        <div style="display: flex; justify-content: center;">
+            <ol style="width: fit-content; text-align: left;">
+                {% for c in top_loyalty|slice:":10" %}
+                <li>{{ c.client__client }} — <strong>{{ c.orders_count }}</strong> зак.</li>
+                {% empty %}
+                <li>Нет данных</li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+    
+</div>
+<hr>
+<div style="flex:1">
+    <h3>Графики</h3>
+    <canvas id="miniLiters" height="160"></canvas>
+    <canvas id="miniRevenue" height="160" style="margin-top:10px;"></canvas>
+</div>
+
+
+<script src="{% static 'reports/js/chart.js' %}"></script>
+
+<script>
+    const labels = JSON.parse('{{ labels_json|escapejs }}');
+    const liters = JSON.parse('{{ liters_json|escapejs }}');
+    const revenue = JSON.parse('{{ revenue_json|escapejs }}');
+    new Chart(document.getElementById('miniLiters'), {
+        type: 'line',
+        data: {labels, datasets: [{label: 'Литры', data: liters, fill: true}]},
+        options: {responsive: true}
+    });
+    new Chart(document.getElementById('miniRevenue'), {
+        type: 'line',
+        data: {labels, datasets: [{label: 'Выручка', data: revenue, fill: true}]},
+        options: {responsive: true}
+    });
+</script>
+<script>
+    const allInputs = document.querySelectorAll('input');
+    const clear_input = document.getElementById('clear');
+
+    clear_input.addEventListener('click', () => {
+        allInputs.forEach(input => {
+            input.value = '';
+        });
+    });
+
+
+</script>
+{% endblock %}

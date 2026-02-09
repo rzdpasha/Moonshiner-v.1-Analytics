@@ -1,0 +1,43 @@
+{% load static %}
+{% load homebrew_tags %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>
+        {% block title %}{% endblock %}
+    </title>
+    {% include 'components/head.html' %}
+</head>
+<body class="is-size-5">
+{#    <header class="header sticky-top">#}
+    <nav class="navbar is-fixed-top is-dark has-shadow">
+        <div class="navbar-item">
+            <a class="navbar-link" href="{% url "homebrew:brew" %}">
+            <img src="{% static 'img/logo.jpg' %}" alt="" width="30" height="30" class="d-inline-block align-text-top">
+            RZDPASHA
+            </a>
+            <a class="navbar-link" href="/admin/" target="_blank">Admin</a>
+        </div>
+    </nav>
+    <div class="header">
+        <h1 class="is-size-4">HEADER</h1>
+    </div>
+<div class="section pt-3 pb-0">
+        <nav class="breadcrumb has-succeeds-separator">
+            <ul class="container is-size-5">
+                <li class="has-text-grey-dark"><a href="">Главная</a></li>
+                <li class="has-text-grey"><a href="">Винокурение</a></li>
+                <li class="is-active"><a href="">Магазин</a></li>
+            </ul>
+        </nav>
+    </div>
+    {% block body %}
+    
+    {% endblock %}
+    <div class="footer">
+        <p>&copy 2023-25 Частичное или полное копирование информации с данного сайта для распространения на других
+            ресурсах,
+            в том числе и бумажных, строго запрещено
+    </div>
+</body>
+</html>

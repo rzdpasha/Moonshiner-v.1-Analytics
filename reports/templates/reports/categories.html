@@ -1,0 +1,118 @@
+{% extends "reports/base_reports.html" %}
+
+{% load static %}
+{% block content %}
+
+<p class="subtitle is-3">{{ title }}</p>
+
+<div class="card mb-5">
+    <header class="card-header">
+        <p class="card-header-title">
+            Период
+        </p>
+    </header>
+
+    <div class="card-content">
+        <form method="get">
+            <div class="columns is-multiline">
+
+                <div class="column is-3">
+                    <div class="field">
+                        <label class="label">От:</label>
+                        <div class="control">
+                            <input class="input" type="date" name="from" value="{{ date_from|date:'Y-m-d' }}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="column is-3">
+                    <div class="field">
+                        <label class="label">До:</label>
+                        <div class="control">
+                            <input class="input" type="date" name="to" value="{{ date_to|date:'Y-m-d' }}">
+                        </div>
+                    </div>
+                </div>
+                <!-- Кнопка фильтровать -->
+                <div class="column is-3">
+                    <div class="field">
+                        <label class="label">&nbsp;</label>
+                        <div class="control">
+                            <button type="submit" class="button is-primary is-fullwidth">
+                                Фильтровать
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<p class="subtitle is-3">Данные по категориям</p>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Категория</th>
+        <th>Продаж</th>
+        <th>Литров</th>
+        <th>Выручка (₽)</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for g in grouped %}
+    <tr>
+        <td>{{ g.category__title }}</td>
+        <td>{{ g.qty }}</td>
+        <td>{{ g.liters }}</td>
+        <td>{{ g.revenue }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="4">Нет данных</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<hr>
+
+<h2>График: Литры по категориям</h2>
+<canvas id="chartQty" height="120"></canvas>
+
+<h2>График: Выручка по категориям</h2>
+<canvas id="chartRevenue" height="120"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Безопасно декодируем JSON
+    const labels = JSON.parse('{{ labels_json|escapejs }}');
+    const qty = JSON.parse('{{ qty_json|escapejs }}');
+    const revenue = JSON.parse('{{ revenue_json|escapejs }}');
+
+    new Chart(document.getElementById('chartQty'), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Литры',
+                data: qty,
+                backgroundColor: "rgba(54,162,235,0.5)"
+            }]
+        }
+    });
+
+    new Chart(document.getElementById('chartRevenue'), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Выручка (₽)',
+                data: revenue,
+                backgroundColor: "rgba(255,99,132,0.5)"
+            }]
+        }
+    });
+</script>
+
+{% endblock %}

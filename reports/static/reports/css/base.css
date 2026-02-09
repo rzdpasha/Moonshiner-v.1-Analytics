@@ -1,0 +1,35 @@
+@font-face {
+    font-family: 'AmberFont';
+    src: url('../fonts/amber-font.woff2') format('woff2'),
+         url('../fonts/amber-font.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'AmberFont';
+    src: url('../fonts/amber-font-bold.woff2') format('woff2'),
+         url('../fonts/amber-font-bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* применяем глобально ко ВСЕМУ проекту */
+html, body {
+    font-family: 'AmberFont', "Segoe UI", Roboto, sans-serif !important;
+}
+
+.admin #header,
+.admin #content *,
+.admin .module,
+.admin .button,
+.card,
+.box,
+.table,
+.control,
+.input,
+.label {
+    font-family: 'AmberFont', sans-serif !important;
+}

@@ -1,0 +1,119 @@
+{% extends "reports/base_reports.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+<p class="subtitle is-3">{{ title }}</p>
+
+    <div class="box" style="margin-bottom:20px;">
+        <p class="subtitle is-4">Год отчёта: {{ year }}</p>
+        <a class="button" href="?year={{ prev_year }}">← {{ prev_year }}</a>
+        <a class="button" href="?year={{ next_year }}">{{ next_year }} →</a>
+    </div>
+
+    <hr>
+
+    <p class="subtitle is-4">Итоги за {{ year }} год</p>
+
+<div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:14px;">
+        <div style="padding:20px; border-radius:12px; background:#f5f5f5;">
+            <div style="font-size:14px; opacity:0.7; color:#222222;">Доходы</div>
+            <div style="font-size:26px; font-weight:700; color:#1a7f37;">{{ total_income|floatformat:0|intcomma }} ₽
+            </div>
+        </div>
+
+        <div style="padding:20px; border-radius:12px; background:#f5f5f5;">
+            <div style="font-size:14px; opacity:0.7; color:#222222;">Расходы</div>
+            <div style="font-size:26px; font-weight:700; color:#9c1717;">{{ total_cost|floatformat:0|intcomma }} ₽</div>
+        </div>
+
+        <div style="padding:20px; border-radius:12px; background:#f5f5f5;">
+            <div style="font-size:14px; opacity:0.7; color:#222222;">Электроэнергия</div>
+            <div style="font-size:26px; font-weight:700; color:#5511ff;">{{ total_energy|floatformat:0|intcomma }} ₽
+            </div>
+        </div>
+
+        <div style="padding:20px; border-radius:12px; background:#ffad00;">
+            <div style="font-size:14px; opacity:0.7; color:#222222;">Прибыль</div>
+            <div style="font-size:26px; font-weight:700; color:#000000;">
+                {{ total_profit|floatformat:0|intcomma }} ₽
+            </div>
+        </div>
+
+    </div>
+
+    <hr>
+
+    <p class="subtitle is-4">Динамика по месяцам ({{ year }})</p>
+
+    <canvas id="profitChart" height="120"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Данные из Django
+        const labels = {{ labels|safe }};
+        const incomes = {{ incomes|safe }};
+        const costs = {{ costs|safe }};
+        const energies = {{ energies|safe }};
+        const profits = {{ profits|safe }};
+
+        // Рисуем график
+        new Chart(document.getElementById("profitChart"), {
+            type: "line",
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: "Доходы",
+                        data: incomes,
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.3
+                    },
+                    {
+                        label: "Расходы",
+                        data: costs,
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.3
+                    },
+                    {
+                        label: "Прибыль",
+                        data: profits,
+                        borderWidth: 3,
+                        fill: false,
+                        tension: 0.3
+                    },
+                    // --- ЭНЕРГИЯ НА ОТДЕЛЬНОЙ ОСИ Y (справа) ---
+                    {
+                        label: "Энергия",
+                        data: energies,
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                        yAxisID: "y_energy",
+                        fill: false,
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {display: true, text: "₽"}
+                    },
+                    y_energy: {
+                        type: "linear",
+                        position: "right",
+                        beginAtZero: true,
+                        grid: {drawOnChartArea: false},
+                        title: {display: true, text: "Энергия (₽)"}
+                    }
+                }
+            }
+        });
+    </script>
+
+{% endblock %}

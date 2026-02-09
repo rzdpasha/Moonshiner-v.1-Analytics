@@ -1,0 +1,91 @@
+{% extends "reports/base_reports.html" %}
+{% load static %}
+{% block content %}
+
+<p class="subtitle is-3">{{ title }}</p>
+
+<div class="card mb-5">
+    <header class="card-header">
+        <p class="card-header-title">
+            Период
+        </p>
+    </header>
+
+    <div class="card-content">
+        <form method="get">
+            <div class="columns is-multiline">
+
+
+                <div class="column is-3">
+                    <div class="field">
+                        <label class="label">От:</label>
+                        <div class="control">
+                            <input class="input" type="date" name="from" value="{{ date_from|date:'Y-m-d' }}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="column is-3">
+                    <div class="field">
+                        <label class="label">До:</label>
+                        <div class="control">
+                            <input class="input" type="date" name="to" value="{{ date_to|date:'Y-m-d' }}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="column is-3">
+                    <div class="field">
+                        <label class="label">По полю:</label>
+                        <div class="select is-rounded">
+                            <select name="date_field" class="select-label">
+                                <option value="date0" {% if date_field == 'date0' %}selected{% endif %}>date0 (заказ)</option>
+                                <option value="date" {% if date_field == 'date' %}selected{% endif %}>date (реализация)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Кнопка применить -->
+                <div class="column is-3">
+                    <div class="field">
+                        <label class="label">&nbsp;</label>
+                        <div class="control">
+                            <button type="submit" class="button is-primary is-fullwidth">
+                                Фильтровать
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- KPIs -->
+<div style="display:flex; gap:14px; margin-bottom:12px;">
+    <div class="subtitle is-4">Всего заказов: <strong>{{ total_orders }}</strong></div>
+    <div class="subtitle is-4">Всего литров: <strong>{{ total_liters }}</strong></div>
+    <div class="subtitle is-4">Выручка: <strong>{{ total_revenue }}</strong></div>
+</div>
+
+<canvas id="monthLiters" height="120"></canvas>
+<canvas id="monthRevenue" height="120" style="margin-top:12px;"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const labels = JSON.parse('{{ labels_json|escapejs }}');
+    const liters = JSON.parse('{{ liters_json|escapejs }}');
+    const revenue = JSON.parse('{{ revenue_json|escapejs }}');
+
+    new Chart(document.getElementById('monthLiters'), {
+        type: 'bar',
+        data: {labels, datasets: [{label: 'Литры', data: liters}]},
+        options: {responsive: true}
+    });
+    new Chart(document.getElementById('monthRevenue'), {
+        type: 'bar',
+        data: {labels, datasets: [{label: 'Выручка', data: revenue}]},
+        options: {responsive: true}
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="ru" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Отчёты{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'reports/css/bulma.min.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link rel="stylesheet" href="{% static 'reports/css/fonts.css' %}">
+    <link rel="stylesheet" href="{% static 'reports/css/reports.css' %}">
+
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+<nav class="navbar is-info" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item has-background-grey-dark" href="/">
+            <strong>Moonshiner</strong>
+        </a>
+        
+        {# Добавляем "бургер" для мобилок (библиотека это любит) #}
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMain">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div id="navbarMain" class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item" href="{% url 'reports:profit' %}">Доход–расход</a>
+            <a class="navbar-item" href="{% url 'reports:profit_yearly' %}">Годовой</a>
+            <a class="navbar-item" href="{% url 'reports:categories' %}">Категории</a>
+            <a class="navbar-item" href="{% url 'reports:brew' %}">По напиткам</a>
+            <a class="navbar-item" href="{% url 'reports:monthly' %}">По месяцам</a>
+            <a class="navbar-item" href="{% url 'reports:clients' %}">По клиентам</a>
+        </div>
+    </div>
+</nav>
+
+<section class="section">
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+  $navbarBurgers.forEach( el => {
+    el.addEventListener('click', () => {
+      const target = el.dataset.target;
+      const $target = document.getElementById(target);
+      el.classList.toggle('is-active');
+      $target.classList.toggle('is-active');
+    });
+  });
+});
+</script>
+
+</body>
+</html>

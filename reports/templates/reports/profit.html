@@ -1,0 +1,154 @@
+{% extends "reports/base_reports.html" %}
+
+{% load static %}
+{% block content %}
+
+<p class="subtitle is-3">{{ title }}</p>
+
+<div class="card mb-5">
+    <header class="card-header">
+        <p class="card-header-title">
+            Основной период
+        </p>
+    </header>
+
+    <div class="card-content">
+        <form method="get">
+            <div class="columns is-multiline">
+
+                <!-- Период 1: дата от -->
+                <div class="column is-3">
+                    <div class="field">
+                        <label class="label">От</label>
+                        <div class="control">
+                            <input class="input" type="date" name="from"
+                                   value="{{ date_from|default:'' }}">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Период 1: дата до -->
+                <div class="column is-3">
+                    <div class="field">
+                        <label class="label">До</label>
+                        <div class="control">
+                            <input class="input" type="date" name="to"
+                                   value="{{ date_to|default:'' }}">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Агрегация -->
+                <div class="column is-3">
+                    <div class="field">
+                        <label class="label">Агрегация</label>
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <select name="agg">
+                                    <option value="day"   {% if agg == "day" %}selected{% endif %}>По дням</option>
+                                    <option value="month" {% if agg == "month" %}selected{% endif %}>По месяцам</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Кнопка применить -->
+                <div class="column is-3">
+                    <div class="field">
+                        <label class="label">&nbsp;</label>
+                        <div class="control">
+                            <button class="button is-primary is-fullwidth">
+                                Применить
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+<div class="card mb-5">
+    <header class="card-header">
+        <p class="card-header-title">
+            Сравнение с другим периодом
+        </p>
+    </header>
+
+    <div class="card-content">
+        <form method="get">
+            <div class="columns is-multiline">
+
+                <!-- Период 2: от -->
+                <div class="column is-3">
+                    <div class="field">
+                        <label class="label">От</label>
+                        <div class="control">
+                            <input class="input" type="date" name="from2"
+                                   value="{{ date_from2|default:'' }}">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Период 2: до -->
+                <div class="column is-3">
+                    <div class="field">
+                        <label class="label">До</label>
+                        <div class="control">
+                            <input class="input" type="date" name="to2"
+                                   value="{{ date_to2|default:'' }}">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Кнопка сравнить -->
+                <div class="column is-3">
+                    <div class="field">
+                        <label class="label">&nbsp;</label>
+                        <div class="control">
+                            <button class="button is-link is-fullwidth">
+                                Сравнить
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Кнопка скачать PDF -->
+                <div class="column is-3">
+                    <div class="field">
+                        <label class="label">&nbsp;</label>
+
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<canvas id="profitChart"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('profitChart');
+
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: {{ labels|safe }},
+        datasets: [
+            { label: 'Доход', data: {{ chart_income|safe }} },
+            { label: 'Расходы', data: {{ chart_cost|safe }} },
+            { label: 'Энергия', data: {{ chart_energy|safe }} },
+            { label: 'Прибыль', data: {{ chart_profit|safe }} },
+        ]
+    }
+});
+</script>
+{% endblock %}

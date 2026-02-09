@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bulma',
+    'django.contrib.humanize',
     "homebrew.apps.HomebrewConfig",
     "reports.apps.ReportsConfig",
 ]

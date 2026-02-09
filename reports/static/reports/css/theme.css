@@ -1,0 +1,84 @@
+/* ===== Светлая тема по умолчанию ===== */
+:root {
+    /*--navbar-bg: #0ea1c5;      !* Bulma primary *!*/
+    --navbar-bg: #3273dc;      /* Bulma primary */
+    --navbar-color: white;
+
+    --page-bg: #ffffff;
+    --text-color: #363636;
+
+    --card-bg: white;
+    --card-border: #dbdbdb;
+
+    /*--table-bg: white;*/
+    /*--table-border: #dbdbdb;*/
+    --table-hover: #f5f5f5;
+}
+
+/* ===== Тёмная тема ===== */
+.dark-theme {
+    --navbar-bg: #1f1f1f;
+    --navbar-color: #fafafa;
+
+    --page-bg: #121212;
+    --text-color: #e5e5e5;
+
+    --card-bg: #1e1e1e;
+    --card-border: #2a2a2a;
+
+    /*--table-bg: #1a1a1a;*/
+    /*--table-border: #333;*/
+    --table-hover: #242424;
+}
+
+/* ===== Использование переменных ===== */
+
+body {
+    background: var(--page-bg);
+    color: var(--text-color);
+}
+
+.navbar,
+.navbar-menu,
+.navbar-start,
+.navbar-item,
+.navbar-link {
+    /*background: var(--navbar-bg) !important;*/
+    color: var(--navbar-color) !important;
+}
+
+.navbar-item:hover,
+.navbar-link:hover {
+    background: rgba(255,255,255,0.1) !important;
+}
+
+.card {
+    background: var(--card-bg);
+    /*border: 1px solid var(--card-border);*/
+}
+
+.table {
+    background: var(--table-bg);
+    border-color: var(--table-border);
+}
+
+.table tr:hover {
+    background: var(--table-hover);
+}
+
+/* Управление видимостью иконок */
+.theme-icon-sun {
+    opacity: 1;
+}
+.theme-icon-moon {
+    opacity: 0;
+}
+
+.dark-theme .theme-icon-sun {
+    opacity: 0;
+    transform: scale(0.7);
+}
+.dark-theme .theme-icon-moon {
+    opacity: 1;
+    transform: scale(1);
+}
