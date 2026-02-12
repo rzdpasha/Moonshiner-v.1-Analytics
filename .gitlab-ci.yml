@@ -14,7 +14,7 @@ variables:
 clone_repository:
   stage: clone
   tags:
-    - prod
+    - dash
   script:
     - git config --global --add safe.directory "$PROJECT_DIR"
     - |
@@ -29,7 +29,7 @@ clone_repository:
 setup_environment:
   stage: setup
   tags:
-    - prod
+    - dash
   script:
     - cd "$PROJECT_DIR"
     # Для стабильности venv лучше обновлять только при изменении requirements
@@ -43,7 +43,7 @@ setup_environment:
 deploy:
   stage: deploy
   tags:
-    - prod
+    - dash
   script:
     - cd "$PROJECT_DIR"
     # Подготовка статики и миграции
@@ -55,7 +55,7 @@ deploy:
 restart_services:
   stage: restart
   tags:
-    - prod
+    - dash
   script:
     # Оптимизированная смена прав (убрали фронтенд-папки)
     - sudo find "$PROJECT_DIR" -path "$VENV" -prune -o -exec chown www:webdev {} +
