@@ -61,7 +61,6 @@ restart_services:
     - sudo find "$PROJECT_DIR" -path "$VENV" -prune -o -type d -exec chmod 775 {} +
     - sudo find "$PROJECT_DIR" -path "$VENV" -prune -o -type f -exec chmod 664 {} +
     
-    # Рестарт сервисов (Celery тоже оставляем, раз он в планах)
     - sudo systemctl daemon-reload
     - sudo systemctl restart gunicorn
 #    - sudo systemctl reload angie
