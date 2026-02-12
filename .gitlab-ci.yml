@@ -46,9 +46,7 @@ deploy:
     - dash
   script:
     - cd "$PROJECT_DIR"
-    # Подготовка статики и миграции
     - $PYTHON manage.py collectstatic --noinput
-    # Сначала проверяем статус, потом катим
     - $PYTHON manage.py showmigrations
     - $PYTHON manage.py migrate --noinput
 
