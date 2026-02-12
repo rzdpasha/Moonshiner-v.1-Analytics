@@ -56,7 +56,6 @@ restart_services:
     - sudo find "$PROJECT_DIR" -path "$PROJECT_DIR/venv" -prune -o -exec chown www:webdev {} +
     - sudo find "$PROJECT_DIR" -path "$PROJECT_DIR/venv" -prune -o -type d -exec chmod 775 {} +
     - sudo find "$PROJECT_DIR" -path "$PROJECT_DIR/venv" -prune -o -type f -exec chmod 664 {} +
-    
     - sudo systemctl daemon-reload
     - sudo systemctl restart gunicorn
 #    - sudo systemctl reload angie
