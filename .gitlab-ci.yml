@@ -57,7 +57,6 @@ restart_services:
   tags:
     - dash
   script:
-    # Оптимизированная смена прав (убрали фронтенд-папки)
     - sudo find "$PROJECT_DIR" -path "$VENV" -prune -o -exec chown www:webdev {} +
     - sudo find "$PROJECT_DIR" -path "$VENV" -prune -o -type d -exec chmod 775 {} +
     - sudo find "$PROJECT_DIR" -path "$VENV" -prune -o -type f -exec chmod 664 {} +
