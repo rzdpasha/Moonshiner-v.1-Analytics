@@ -1,0 +1,68 @@
+stages:
+  - clone
+  - setup
+  - deploy
+  - restart
+
+variables:
+  PROJECT_DIR: "/home/www/moonshiner"
+  VENV: "$PROJECT_DIR/venv"
+  PYTHON: "$VENV/bin/python"
+  PIP: "$VENV/bin/pip"
+  GIT_STRATEGY: none
+
+clone_repository:
+  stage: clone
+  tags:
+    - prod
+  script:
+    - git config --global --add safe.directory "$PROJECT_DIR"
+    - |
+      if [ ! -d "$PROJECT_DIR/.git" ]; then
+        git clone git@gitlab.com:rzdpasha/moonshiner.git "$PROJECT_DIR"
+      else
+        cd "$PROJECT_DIR"
+        git fetch origin
+        git reset --hard origin/main
+      fi
+
+setup_environment:
+  stage: setup
+  tags:
+    - prod
+  script:
+    - cd "$PROJECT_DIR"
+    # Для стабильности venv лучше обновлять только при изменении requirements
+    - |
+      if [ ! -d "$VENV" ]; then
+        python3 -m venv "$VENV"
+      fi
+    - $PYTHON -m pip install --upgrade pip
+    - $PIP install -r requirements.txt
+
+deploy:
+  stage: deploy
+  tags:
+    - prod
+  script:
+    - cd "$PROJECT_DIR"
+    # Подготовка статики и миграции
+    - $PYTHON manage.py collectstatic --noinput
+    # Сначала проверяем статус, потом катим
+    - $PYTHON manage.py showmigrations
+    - $PYTHON manage.py migrate --noinput
+
+restart_services:
+  stage: restart
+  tags:
+    - prod
+  script:
+    # Оптимизированная смена прав (убрали фронтенд-папки)
+    - sudo find "$PROJECT_DIR" -path "$VENV" -prune -o -exec chown www:webdev {} +
+    - sudo find "$PROJECT_DIR" -path "$VENV" -prune -o -type d -exec chmod 775 {} +
+    - sudo find "$PROJECT_DIR" -path "$VENV" -prune -o -type f -exec chmod 664 {} +
+    
+    # Рестарт сервисов (Celery тоже оставляем, раз он в планах)
+    - sudo systemctl daemon-reload
+    - sudo systemctl restart gunicorn
+#    - sudo systemctl reload angie

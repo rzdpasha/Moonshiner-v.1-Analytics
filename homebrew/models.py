@@ -257,7 +257,7 @@ class Cost(models.Model):
         blank=True,
         editable=False,
         verbose_name="Итого",
-        help_text="Заполняется автоматически (count*price или weight*price)",
+        help_text="Заполняется автоматически триггерными функциями Postgres (count*price или weight*price)",
     )
 
     class Meta:

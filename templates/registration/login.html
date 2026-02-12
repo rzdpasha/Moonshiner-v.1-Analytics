@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load bulma_tags %}
+
+{% block content %}
+<section class="hero is-fullheight-with-navbar">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-4-desktop is-6-tablet">
+          <form method="post" class="box has-background-grey-darker">
+            {% csrf_token %}
+            <h3 class="title has-text-white has-text-centered">Moonshiner Analytics</h3>
+            <p class="subtitle has-text-grey-light has-text-centered">Введите данные для доступа к дашборду</p>
+            
+            <div class="field">
+              <label class="label has-text-white">Логин</label>
+              <div class="control has-icons-left">
+                <input class="input" type="text" name="username" placeholder="Guest" required>
+                <span class="icon is-small is-left"><i class="fas fa-user"></i></span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label has-text-white">Пароль</label>
+              <div class="control has-icons-left">
+                <input class="input" type="password" name="password" placeholder="*******" required>
+                <span class="icon is-small is-left"><i class="fas fa-lock"></i></span>
+              </div>
+            </div>
+
+            <button type="submit" class="button is-primary is-fullwidth mt-4">Войти</button>
+          </form>
+          <p class="has-text-centered has-text-grey-dark">
+            <small>Доступ только для авторизованных пользователей</small>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
