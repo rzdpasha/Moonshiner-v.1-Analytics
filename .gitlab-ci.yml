@@ -17,7 +17,6 @@ clone_repository:
     - dash
   script:
     - git config --global --add safe.directory "$PROJECT_DIR"
-    # Если папки .git нет, клонируем прямо в текущую директорию
     - |
       if [ ! -d "$PROJECT_DIR/.git" ]; then
         echo "Клонируем репозиторий..."
