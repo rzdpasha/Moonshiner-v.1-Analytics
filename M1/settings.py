@@ -20,8 +20,8 @@ env = environ.Env(
     EMAIL_HOST_PASSWORD=(str, 'dummy-password'),
     EMAIL_USE_SSL=(bool, True),
     EMAIL_USE_TLS=(bool, False),
-    # CSRF_TRUSTED_ORIGINS=(list, ["http://127.0.0.1:5173", "http://10.8.0.1", "http://10.8.0.3"]),
-    # CORS_ALLOWED_ORIGINS=(list, ["http://localhost:5173", "http://10.8.0.1", "http://10.8.0.3"]),
+    CSRF_TRUSTED_ORIGINS=(str, "http://10.8.0.4"),
+    CORS_ALLOWED_ORIGINS=(str, "http://10.8.0.4"),
     # CELERY_BROKER_URL = (str, 'redis://127.0.0.1:6379/1'),
     # CELERY_RESULT_BACKEND = (str, 'redis://127.0.0.1:6379/1')
 
