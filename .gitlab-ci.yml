@@ -20,7 +20,7 @@ clone_repository:
     - |
       if [ ! -d "$PROJECT_DIR/.git" ]; then
         echo "Клонируем репозиторий..."
-        git clone git@gitlab.com:rzdpasha/m1.git "$PROJECT_DIR"
+        git clone git@gitlab.com:rzdpasha/M1.git "$PROJECT_DIR"
       else
         echo "Обновляем существующий репозиторий..."
         cd "$PROJECT_DIR"
