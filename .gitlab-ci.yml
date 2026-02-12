@@ -14,16 +14,16 @@ variables:
 clone_repository:
   stage: clone
   tags:
-    - dash  # Замени на свой актуальный тег, если он другой
+    - dash
   script:
     - git config --global --add safe.directory "$PROJECT_DIR"
+    # Если папки .git нет, клонируем прямо в текущую директорию
     - |
       if [ ! -d "$PROJECT_DIR/.git" ]; then
-        echo "Папка пуста или не Git-репозиторий, клонируем..."
-        # Очищаем папку если там есть мусор, чтобы клон прошел
-        sudo rm -rf "${PROJECT_DIR:?}"/* git clone git@gitlab.com:rzdpasha/moonshiner.git "$PROJECT_DIR"
+        echo "Клонируем репозиторий..."
+        git clone git@gitlab.com:rzdpasha/moonshiner.git "$PROJECT_DIR"
       else
-        echo "Репозиторий найден, обновляем через reset..."
+        echo "Обновляем существующий репозиторий..."
         cd "$PROJECT_DIR"
         git fetch origin
         git reset --hard origin/main
