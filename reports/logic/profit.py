@@ -37,12 +37,12 @@ def profit_report(request):
     energy_qs = Energy.objects.all()
 
     if date_from:
-        incomes_qs = incomes_qs.filter(date0__date__gte=date_from)
+        incomes_qs = incomes_qs.filter(date__date__gte=date_from)
         costs_qs = costs_qs.filter(date__date__gte=date_from)
         energy_qs = energy_qs.filter(time_start__date__gte=date_from)
 
     if date_to:
-        incomes_qs = incomes_qs.filter(date0__date__lte=date_to)
+        incomes_qs = incomes_qs.filter(date__date__lte=date_to)
         costs_qs = costs_qs.filter(date__date__lte=date_to)
         energy_qs = energy_qs.filter(time_start__date__lte=date_to)
 
