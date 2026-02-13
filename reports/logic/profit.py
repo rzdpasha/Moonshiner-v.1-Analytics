@@ -90,7 +90,7 @@ def profit_report(request):
     label_format = "%Y-%m" if agg == "month" else "%Y-%m-%d"
 
     incomes_grouped = (
-        incomes_qs.annotate(period=trunc("date0"))
+        incomes_qs.annotate(period=trunc("date"))
         .values("period")
         .annotate(
             total=Coalesce(
