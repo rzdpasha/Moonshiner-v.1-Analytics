@@ -21,7 +21,7 @@ def profit_yearly_report(request):
 
     income_raw = (
         DemoIncome.objects.filter(date__year=year)  # Было date0__year
-        .annotate(month=ExtractMonth("date0"))
+        .annotate(month=ExtractMonth("date"))
         .values("month")
         .annotate(total=Sum("total_price"))
     )
