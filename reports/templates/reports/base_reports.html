@@ -39,6 +39,24 @@
             <a class="navbar-item" href="{% url 'reports:monthly' %}">По месяцам</a>
             <a class="navbar-item" href="{% url 'reports:clients' %}">По клиентам</a>
         </div>
+        
+        <div class="navbar-end">
+            <div class="navbar-item">
+                {% if user.is_authenticated %}
+                <div class="buttons">
+                    <form action="{% url 'logout' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="button is-danger is-outlined">
+                            <span class="icon">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </span>
+                            <span>Выход</span>
+                        </button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+        </div>
     </div>
 </nav>
 
