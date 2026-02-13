@@ -18,7 +18,7 @@
 <body>
 <nav class="navbar is-info" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-        <a class="navbar-item has-background-grey-dark" href="/">
+        <a class="navbar-item has-background-grey-light" href="/">
             <strong>Moonshiner</strong>
         </a>
         
@@ -46,7 +46,7 @@
                 <div class="buttons">
                     <form action="{% url 'logout' %}" method="post">
                         {% csrf_token %}
-                        <button type="submit" class="button is-warning is-dark">
+                        <button type="submit" class="button is-link is-light">
                             <span class="icon">
                                 <i class="fas fa-sign-out-alt"></i>
                             </span>
