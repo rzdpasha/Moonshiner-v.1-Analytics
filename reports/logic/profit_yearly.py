@@ -6,7 +6,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Sum, F
 from django.db.models.functions import ExtractMonth
 
-from homebrew.models import DemoIncome, Cost, Energy
+from homebrew.models import Income, Cost, Energy
 
 
 @staff_member_required
@@ -20,8 +20,8 @@ def profit_yearly_report(request):
 
 
     income_raw = (
-        DemoIncome.objects.filter(date__year=year)  # Было date0__year
-        .annotate(month=ExtractMonth("date"))
+        Income.objects.filter(date__year=year)  # Было date0__year
+        .annotate(month=ExtractMonth("date0"))
         .values("month")
         .annotate(total=Sum("total_price"))
     )

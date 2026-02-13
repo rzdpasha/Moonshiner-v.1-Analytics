@@ -5,7 +5,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render
 from decimal import Decimal
 from datetime import datetime
-from homebrew.models import DemoIncome, Cost, Energy
+from homebrew.models import Income, Cost, Energy
 
 
 def _parse_date(s):
@@ -32,7 +32,7 @@ def profit_report(request):
     date_to2 = _parse_date(request.GET.get("to2"))
 
     # ---- Базовые QuerySet ----
-    incomes_qs = DemoIncome.objects.all()
+    incomes_qs = Income.objects.all()
     costs_qs = Cost.objects.all()
     energy_qs = Energy.objects.all()
 
@@ -90,7 +90,7 @@ def profit_report(request):
     label_format = "%Y-%m" if agg == "month" else "%Y-%m-%d"
 
     incomes_grouped = (
-        incomes_qs.annotate(period=trunc("date"))
+        incomes_qs.annotate(period=trunc("date0"))
         .values("period")
         .annotate(
             total=Coalesce(
@@ -187,7 +187,7 @@ def profit_report(request):
     compare = None
 
     if date_from2 and date_to2:
-        inc2 = DemoIncome.objects.filter(
+        inc2 = Income.objects.filter(
             date__date__gte=date_from2,
             date__date__lte=date_to2,  # Переделал на date вместо date0. Причина понятна
         ).aggregate(

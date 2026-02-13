@@ -9,7 +9,7 @@ from django.db.models.functions import Coalesce, TruncMonth
 from django.shortcuts import render
 from django.contrib.admin.views.decorators import staff_member_required
 
-from homebrew.models import DemoIncome
+from homebrew.models import Income, Buyer
 
 
 # helper formatting
@@ -46,7 +46,7 @@ def clients_report(request):
     top_n = int(request.GET.get("top", 10))
     print(top_n)
 
-    qs = DemoIncome.objects.select_related("client").all()
+    qs = Income.objects.select_related("client").all()
     if date_from:
         qs = qs.filter(date__date__gte=date_from)  # Было date0__date
     if date_to:
