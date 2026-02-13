@@ -7,7 +7,7 @@ from django.db.models.functions import Coalesce, TruncMonth
 from django.shortcuts import render
 from django.contrib.admin.views.decorators import staff_member_required
 
-from homebrew.models import Income, Cost, Energy
+from homebrew.models import DemoIncome, Cost, Energy
 
 
 def _parse_date(s: str):
@@ -42,7 +42,7 @@ def monthly_report(request):
     view = request.GET.get("view", "b")
 
     # base qss
-    inc_qs = Income.objects.all()
+    inc_qs = DemoIncome.objects.all()
     if date_from:
         inc_qs = inc_qs.filter(**{f"{date_field}__date__gte": date_from})
     if date_to:

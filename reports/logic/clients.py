@@ -9,7 +9,7 @@ from django.db.models.functions import Coalesce, TruncMonth
 from django.shortcuts import render
 from django.contrib.admin.views.decorators import staff_member_required
 
-from homebrew.models import Income, Buyer, DemoIncome
+from homebrew.models import DemoIncome
 
 
 # helper formatting

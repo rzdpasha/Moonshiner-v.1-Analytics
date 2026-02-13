@@ -7,7 +7,7 @@ from datetime import datetime
 from decimal import Decimal
 import json
 
-from homebrew.models import Income
+from homebrew.models import DemoIncome
 
 
 def _parse_date(s: str):
@@ -25,7 +25,7 @@ def categories_report(request):
     date_from = _parse_date(request.GET.get("from"))
     date_to = _parse_date(request.GET.get("to"))
 
-    qs = Income.objects.all()
+    qs = DemoIncome.objects.all()
 
     if date_from:
         qs = qs.filter(date__date__gte=date_from)  # Было date0__date

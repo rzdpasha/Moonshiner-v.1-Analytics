@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.contrib.admin.views.decorators import staff_member_required
 from datetime import datetime
 
-from homebrew.models import Income
+from homebrew.models import DemoIncome
 
 
 def _parse_date(s: str):
@@ -29,7 +29,7 @@ def brews_report(request):
     date_from = _parse_date(request.GET.get("from"))
     date_to = _parse_date(request.GET.get("to"))
 
-    qs = Income.objects.select_related("variant", "variant__brew")
+    qs = DemoIncome.objects.select_related("variant", "variant__brew")
 
     if date_from:
         qs = qs.filter(date__date__gte=date_from)  # Было date0__date
