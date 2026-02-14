@@ -1,4 +1,3 @@
-from datetime import datetime
 from django.db import models
 from django.db.models import CheckConstraint, Q, F
 from django.utils import timezone
@@ -17,8 +16,6 @@ class Brew(models.Model):
         S42 = "42", "42"
         S70 = "70", "70"
         S96 = "96.6", "96.6"
-
-    """Напитки"""
 
     title = models.CharField(max_length=100, verbose_name="Наименование")
     slug = models.SlugField(max_length=100, unique=True, db_index=True)
@@ -74,7 +71,6 @@ class Brew(models.Model):
 
 
 class Category(models.Model):
-    """Категории напитков"""
 
     title = models.CharField(max_length=100, unique=True, verbose_name="Категория")
     slug = models.SlugField(max_length=100, unique=True, db_index=True)
@@ -93,7 +89,6 @@ class Category(models.Model):
 
 
 class ProductVariant(models.Model):
-    """Конкретная комбинация (Brew, Category) с собственной ценой."""
 
     brew = models.ForeignKey("homebrew.Brew", on_delete=models.PROTECT)
     category = models.ForeignKey("homebrew.Category", on_delete=models.PROTECT)
@@ -110,7 +105,6 @@ class ProductVariant(models.Model):
 
 
 class VariantPriceHistory(models.Model):
-    """История цен для варианта (опционально)."""
 
     variant = models.ForeignKey(ProductVariant, on_delete=models.CASCADE)
     start_date = models.DateField()
@@ -235,10 +229,10 @@ class Cost(models.Model):
         "CategoryCost",
         on_delete=models.CASCADE,
         verbose_name="Категория",
-        related_name="category",
+        related_name="costs",
         blank=True,
     )
-    title = models.CharField(max_length=70, verbose_name="Наименование")
+    title = models.CharField(max_length=255, verbose_name="Наименование")
     count = models.PositiveSmallIntegerField(verbose_name="Количество", default=0)
     weight = models.DecimalField(
         max_digits=6, decimal_places=3, verbose_name="Масса", default=0.000
@@ -257,7 +251,6 @@ class Cost(models.Model):
         blank=True,
         editable=False,
         verbose_name="Итого",
-        help_text="Заполняется автоматически триггерными функциями Postgres (count*price или weight*price)",
     )
 
     class Meta:
@@ -267,7 +260,7 @@ class Cost(models.Model):
         indexes = [models.Index(fields=["date"])]
 
     def __str__(self):
-        return self.category.title
+        return f"{self.title} ({self.category.title if self.category else 'Без категории'})"
 
 
 class EnergyTariff(models.Model):
