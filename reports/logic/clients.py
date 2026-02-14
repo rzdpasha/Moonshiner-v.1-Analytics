@@ -95,15 +95,15 @@ def clients_report(request):
         .order_by("-liters")
     )
 
-    grouped3 = (
-        qs.values("client_id", "client__client")
-        .annotate(
-            orders_count=Count(
-                "order_group_id", distinct=True
-            )  # Считаем уникальные заказы
-        )
-        .order_by("-orders_count")
-    )
+    # grouped3 = (
+    #     qs.values("client_id", "client__client")
+    #     .annotate(
+    #         orders_count=Count(
+    #             "order_group_id", distinct=True
+    #         )  # Считаем уникальные заказы
+    #     )
+    #     .order_by("-orders_count")
+    # )
 
     # aggregate totals for KPI
     total_clients = grouped.count()
@@ -114,7 +114,7 @@ def clients_report(request):
     # top clients
     top_clients = list(grouped[:top_n])
     top_volume = list(grouped2[:top_n])
-    top_loyalty = list(grouped3[:top_n])
+    # top_loyalty = list(grouped3[:top_n])
 
     # prepare chart data
     labels = [g["client__client"] for g in grouped]
@@ -134,7 +134,7 @@ def clients_report(request):
         "grouped": grouped,
         "top_clients": top_clients,
         "top_volume": top_volume,
-        "top_loyalty": top_loyalty,  # Добавили!
+        # "top_loyalty": top_loyalty,  # Добавили!
         "kpis": kpis,
         "labels_json": json.dumps(labels, ensure_ascii=False),
         "liters_json": json.dumps(chart_liters),
