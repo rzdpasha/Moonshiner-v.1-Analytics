@@ -4,7 +4,7 @@ from decimal import Decimal
 
 from django.db import models
 from django.db.models import Sum, Count, IntegerField, F, ExpressionWrapper
-from django.db.models.fields import DecimalField
+from django.db.models.fields import DecimalField, return_None
 from django.db.models.functions import Coalesce, TruncMonth
 from django.shortcuts import render
 from django.contrib.admin.views.decorators import staff_member_required
@@ -146,4 +146,5 @@ def clients_report(request):
 
     template = "reports/clients.html"
 
-    return render(request, template, context)
+    # return render(request, template, context)
+    return context

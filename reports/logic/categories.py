@@ -67,4 +67,5 @@ def categories_report(request):
         "revenue_json": json.dumps(revenue_list),
     }
 
-    return render(request, "reports/categories.html", context)
+    # return render(request, "reports/categories.html", context)
+    return context

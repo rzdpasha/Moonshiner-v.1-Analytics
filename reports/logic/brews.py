@@ -82,4 +82,5 @@ def brews_report(request):
         "date_to": date_to,
     }
 
-    return render(request, "reports/brews.html", context)
+    # return render(request, "reports/brews.html", context)
+    return context

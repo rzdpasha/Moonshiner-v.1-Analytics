@@ -289,4 +289,5 @@ def profit_report(request):
         "date_to2": date_to2,
     }
 
-    return render(request, "reports/profit.html", context)
+    # return render(request, "reports/profit.html", context)
+    return context

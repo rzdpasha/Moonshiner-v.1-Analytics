@@ -1,0 +1,48 @@
+{% extends "reports/base_reports.html" %}
+{% block content %}
+
+<p class="subtitle is-3">Энергозатраты по типам процессов</p>
+
+<div class="box">
+    <p class="subtitle is-4">Год: {{ year }}</p>
+    <a class="button" href="?year={{ prev_year }}">← {{ prev_year }}</a>
+    <a class="button" href="?year={{ next_year }}">{{ next_year }} →</a>
+</div>
+
+<div class="notification is-info is-light">
+    Всего за год: <strong>{{ total_kwh_year|floatformat:1 }} кВт*ч</strong>
+</div>
+
+<div class="box">
+    <canvas id="energyStackedChart" height="120"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('energyStackedChart').getContext('2d');
+    
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ labels_json|safe }},
+            datasets: {{ datasets_json|safe }}
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom' },
+                tooltip: { mode: 'index', intersect: false }
+            },
+            scales: {
+                x: { stacked: false },
+                y: { 
+                    stacked: false,
+                    beginAtZero: true,
+                    title: { display: true, text: 'кВт*ч' }
+                }
+            }
+        }
+    });
+</script>
+
+{% endblock %}
