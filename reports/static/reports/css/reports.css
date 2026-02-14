@@ -1,4 +1,7 @@
-/* ===== Общие стили для всех отчётов ===== */
+::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+}
 
 .container {
     margin-top: 1.5rem;
