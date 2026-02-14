@@ -1,13 +1,10 @@
 import json
 from datetime import datetime
-from decimal import Decimal
-from django.db import models
 from django.db.models import Sum, Count, IntegerField
 from django.db.models.functions import Coalesce, TruncMonth
-from django.shortcuts import render
 from django.contrib.admin.views.decorators import staff_member_required
 
-from homebrew.models import Income, Cost, Energy
+from homebrew.models import Income
 
 
 def _parse_date(s: str):
@@ -77,7 +74,6 @@ def monthly_report(request):
         liters.append(int(r["liters"]))
         revenue.append(int(r["revenue"]))
 
-    # summary KPIs
     total_revenue = fmt_money_int(sum(revenue))
     total_liters = sum(liters)
     total_orders = sum(r["orders"] for r in grouped)

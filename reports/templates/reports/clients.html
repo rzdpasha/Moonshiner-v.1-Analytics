@@ -67,7 +67,6 @@
     </div>
 </div>
 
-<!-- Big KPI cards -->
 <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:14px;">
     <div style="padding:20px; background:#f7fbf9; border-radius:12px;">
         <div style="font-size:13px;color:#444">Продаж</div>
@@ -100,7 +99,7 @@
 <div style="display: flex; gap: 30px; margin-top: 25px; flex-wrap: wrap;">
     
     <div style="flex: 1; min-width: 250px;">
-        <p class="subtitle is-3 has-text-centered">Топ (выручка)</p>
+        <p class="subtitle is-3 has-text-centered">Топ-10 (выручка)</p>
         <div style="display: flex; justify-content: center;">
             <ol style="width: fit-content; text-align: left;">
                 {% for c in top_clients|slice:":10" %}
@@ -113,24 +112,11 @@
     </div>
 
     <div style="flex: 1; min-width: 250px;">
-        <p class="subtitle is-3 has-text-centered">Топ (объёмы)</p>
+        <p class="subtitle is-3 has-text-centered">Топ-10 (объёмы)</p>
         <div style="display: flex; justify-content: center;">
             <ol style="width: fit-content; text-align: left;">
                 {% for c in top_volume|slice:":10" %}
                 <li>{{ c.client__client }} — <strong>{{ c.liters|intcomma }}</strong> л</li>
-                {% empty %}
-                <li>Нет данных</li>
-                {% endfor %}
-            </ol>
-        </div>
-    </div>
-
-    <div style="flex: 1; min-width: 250px;">
-        <p class="subtitle is-3 has-text-centered">Топ (визиты)</p>
-        <div style="display: flex; justify-content: center;">
-            <ol style="width: fit-content; text-align: left;">
-                {% for c in top_loyalty|slice:":10" %}
-                <li>{{ c.client__client }} — <strong>{{ c.orders_count }}</strong> зак.</li>
                 {% empty %}
                 <li>Нет данных</li>
                 {% endfor %}
