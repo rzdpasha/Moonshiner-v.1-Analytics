@@ -24,11 +24,12 @@ def energy_process_report(request):
 
     # Список всех типов процессов из модели
     # types = [t[0] for t in Energy.TYPE_CHOICES]
-    types = Energy.objects.filter(time_start__year=year).values_list('type', flat=True).distinct()
+    # types = Energy.objects.filter(time_start__year=year).values_list('type', flat=True).distinct()
+    type_map = dict(Energy.TYPE_CHOICES)
 
     # Готовим структуру: { 'RECT': [0, 0, 15.5, ...], 'DSTL': [...] }
     # 12 нулей для каждого месяца
-    datasets_map = {t: [0.0] * 12 for t in types}
+    datasets_map = {t: [0.0] * 12 for t in type_map.keys()}
 
     for row in qs:
         m_idx = row["month"].month - 1  # Индекс 0-11
@@ -46,7 +47,7 @@ def energy_process_report(request):
 
     for proc_type, values in datasets_map.items():
         chart_datasets.append({
-            "label": proc_type,
+            "label": type_map.get(proc_type, proc_type),
             "data": values,
             "backgroundColor": colors.get(proc_type, "#cccccc"),
         })
