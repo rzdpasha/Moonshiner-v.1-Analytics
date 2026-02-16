@@ -17,6 +17,7 @@ media/
 
 # VSCode / PyCharm
 .idea/
+**/.idea/
 .vscode/
 
 # OS files
